@@ -18,7 +18,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="/posts/update/{{$post->id}}" method="POST" enctype="multipart/form-data">
+                                <form action="/post/update/{{$post->id}}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-6">
@@ -71,8 +71,7 @@
                                         <label for="">Image</label>
                                         <div class="row">
                                             <div class="col-md-9">
-                                                <input type="file" class="dropify" name="image" id="image"
-                                                    value=" {{ old('image') }} " />
+                                                <input type="file" class="dropify" name="image" id="image" />
                                             </div>
                                             <div class="col">
                                                 <img src="/storage/{{ $post->image }}" width="200" height="200">

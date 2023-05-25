@@ -2,7 +2,13 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SessionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +22,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('admin.index');
-});
+    // Role::create(['name' => 'writer']);
+    // Permission::create(['name' => 'edit post']);
+    // $role = Role::findById(2);
+    // $permission = Permission::all();
+    // $role->syncPermissions($permission);
+    // $permission->removeRole($role);
+    // $role->revokePermissionTo($permission);
+    // auth()->user()->givePermissionTo('update post');
 
+    return view('welcome');
+});
+Route::get('admin/index', function(){ return view('admin.index'); });
+Route::resource('register', RegisterController::class);
+Route::get('login',[SessionController::class, 'index']);
+Route::post('login',[SessionController::class, 'store']);
+Route::get('logout',[SessionController::class, 'destroy']);
 // category
 Route::get('category',[CategoryController::class, 'index']);
 Route::post('store',[CategoryController::class, 'store']);
@@ -32,6 +51,10 @@ Route::get('post/create',[PostsController::class, 'create']);
 Route::post('posts',[PostsController::class, 'store']);
 Route::get('post/edit/{id}',[PostsController::class, 'edit']);
 Route::post('post/update/{id}',[PostsController::class, 'update']);
-
-
 Route::post('post/delete/{id}',[PostsController::class, 'delete']);
+Route::get('status/{post}',[PostsController::class, 'status']);
+//user
+Route::patch('user/state/{id}',[UserController::class, 'stateUpdate']);
+Route::resource('user', UserController::class);
+//role
+Route::resource('role', RoleController::class);

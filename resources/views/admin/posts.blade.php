@@ -1,50 +1,22 @@
 <x-layout>
+    <link rel="stylesheet" href="/app.css">
     <x-nav />
     <x-sidebar />
-
-    <div class="content-wrapper">
-        <div class="content-header">
-            <div class="container-fluid">
-                @if (session()->has('success'))
-                    <script>
-                        // toastr.success('Done', "{{ session()->get('success') }}");
-                        Swal.fire(
-                        'Good job!',
-                        '{{ session()->get("success") }}!',
-                        'success'
-                    )
-                    </script>
-                @endif
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">All Posts</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item">
-                               <a name="" id="" class="btn btn-primary" href="post/create" role="button">Add</a>
-                            </li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- Main content -->
+    <div class="content-wrapper mt-3">
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover">
+                                <h1>All Posts <a name="" id="" class="btn btn-primary float-right" href="post/create" role="button">Add</a></h1>
+                                <table id="myTable" class="table table-bordered table-hover">
                                     <thead>
-                                        <tr class="text-blue">
+                                        <tr>
                                             <th>No</th>
                                             <th>Image</th>
                                             <th>Title</th>
                                             <th>Category</th>
-                                            <th>Excerpt</th>
-                                            {{-- <th>Body</th> --}}
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -53,25 +25,24 @@
                                         @foreach ($posts as $post)
                                             <tr>
                                                 <td> {{ $post->id }} </td>
-                                                <td> <img src="/storage/{{$post->image}}" height="60" width="60"> </td>
+                                                <td> <img src="/storage/{{ $post->image }}" height="60" width="60"> </td>
                                                 <td> {{ ucwords($post->title) }} </td>
                                                 <td> {{ ucwords($post->category->name) }} </td>
-                                                <td style=" text-overflow: ellipsis; width:30%"> <p> {{ $post->excerpt }} </p> </td>
-                                                {{-- <td> {{ ucwords($post->body) }} </td> --}}
-                                                @if ($post->status == 0)
-                                                    <td><span
-                                                            class="bg-info bg-lightblue m-auto p-md-1 rounded-pill">Active</span>
-                                                    </td>
-                                                @else
-                                                    <td><span
-                                                            class="bg-red bg-lightblue m-auto p-md-1 rounded-pill">Inactive</span>
-                                                    </td>
-                                                @endif
                                                 <td>
-                                                    <a href="post/edit/{{ $post->id }}" class="btn" role="button"> <i class='fas fa-edit' style='font-size:24px; color:green'></i>
+                                                    <p><input type="checkbox" id="switch-{{ $post->id }}" switch="bool"
+                                                            onchange="change('switch-{{ $post->id }}')"
+                                                            {{ $post->status == 0 ? 'checked' : '' }} />
+                                                        <label for="switch-{{ $post->id }}" data-on-label="Active" data-off-label="Inactive"></label>
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <a href="post/edit/{{ $post->id }}" class="btn"
+                                                        role="button"> <i class='fas fa-edit'
+                                                            style='font-size:24px; color:green'></i>
                                                     </a>
                                                     <button class="btn postdelete_btn" value="{{ $post->id }}"> <i
-                                                            class='far fa-trash-alt' style='font-size:24px; color:red'></i>
+                                                            class='far fa-trash-alt'
+                                                            style='font-size:24px; color:red'></i>
                                                     </button>
                                                 </td>
                                             </tr>
@@ -94,8 +65,28 @@
     </div>
 </x-layout>
 <script>
-$(document).ready(function () {
-    $(document).on('click', '.postdelete_btn', function() {
+    function change(id) {
+        var state = $('#' + id).is(':checked');
+        var status = state == true ? 0 : 1;
+        var s_id = id.split('-')[1];
+        console.log(s_id);
+        $.ajax({
+            type: "get",
+            url: "status/" + s_id,
+            data: {
+                'status': status,
+            },
+            success: function(response) {
+                console.log(response);
+                toastr.success(response.title, response.message);
+            }
+        });
+    }
+    $(document).ready(function() {
+
+
+
+        $(document).on('click', '.postdelete_btn', function() {
             var id = $(this).val();
             // console.log(id);
             swal.fire({
@@ -142,5 +133,10 @@ $(document).ready(function () {
             });
 
         });
-});
+    });
 </script>
+@if (session()->has('success'))
+<script>
+    toastr.success('Done', "{{ session()->get('success') }}");
+</script>
+@endif

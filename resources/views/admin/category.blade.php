@@ -1,37 +1,18 @@
 <x-layout>
     <x-nav />
     <x-sidebar />
-
-
     <div class="content-wrapper">
-        <div class="content-header">
-            <div class="container-fluid">
-
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Categories</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item">
-                                <input name="" id="" data-toggle="modal" data-target="#addcategory"
-                                    class="btn btn-primary" type="button" value="Add">
-                            </li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- Main content -->
-        <section class="content">
+        <section class="content mt-3">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover">
+                                <h1>Categories   <input name="" id="" data-toggle="modal" data-target="#addcategory"
+                                    class="btn btn-primary float-right" type="button" value="Add"></h1>
+                                <table id="myTable" class="table table-bordered table-hover">
                                     <thead>
-                                        <tr class="text-blue">
+                                        <tr>
                                             <th>No</th>
                                             <th>Name</th>
                                             <th>Status</th>
@@ -57,7 +38,8 @@
                                                             class='fas fa-edit' style='font-size:24px; color:green'></i>
                                                     </button>
                                                     <button class="btn delete_btn" value="{{ $category->id }}"> <i
-                                                            class='far fa-trash-alt' style='font-size:24px; color:red'></i>
+                                                            class='far fa-trash-alt'
+                                                            style='font-size:24px; color:red'></i>
                                                     </button>
                                                 </td>
                                             </tr>
@@ -74,80 +56,20 @@
                 </div>
                 <!-- /.row -->
             </div>
-            {{-- add category model --}}
-            <x-cat-modal modalId="addcategory" title="Add Category" errorId="err-name"
-             bName="Save" bType="submit" bClass="add_btn"/>
 
-             <x-cat-modal modalId="editcategorymodel" title="Edit Category" errorId="2err-name"
-             bName="Update" bType="button" bClass="update_btn"/>
+            <x-cat-modal modalId="addcategory" title="Add Category" errorId="err-name" bName="Save" bType="submit"
+                bClass="add_btn" />
 
-
-            {{-- edit category model --}}
-            {{-- <div class="modal fade" id="editcategorymodel" tabindex="-1" role="dialog"
-                aria-labelledby="modelTitleId" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Edit Category</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container-fluid">
-                                <div class="container">
-                                    <form action="" method="GET">
-                                        <div class="form-group">
-                                            <label for="">Name</label>
-                                            <input type="text" name="name" id="editname" class="form-control"
-                                                placeholder="" aria-describedby="helpId">
-                                        </div>
-                                        <p class="text-red " id="2err-name"></p>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input type="radio" class="form-check-input" name="estatus"
-                                                    id="1status" value="0" checked>
-                                                Active
-                                            </label> <br />
-                                            <label class="form-check-label">
-                                                <input type="radio" class="form-check-input" name="estatus"
-                                                    id="2status" value="1">
-                                                Inactive
-                                            </label>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary update_btn">Update</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-
-
+            <x-cat-modal modalId="editcategorymodel" title="Edit Category" errorId="2err-name" bName="Update"
+                bType="button" bClass="update_btn" />
         </section>
-        <!-- /.content -->
     </div>
-
-
 </x-layout>
 
-
-{{-- <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script> --}}
-
 @if (session()->has('success'))
-<script>
-    // toastr.success('Done', "{{ session()->get('success') }}");
-    Swal.fire(
-    'Good job!',
-    '{{ session()->get("success") }}!',
-    'success'
-)
-</script>
+    <script>
+        toastr.success('Done', "{{ session()->get('success') }}");
+    </script>
 @endif
 
 <script>
@@ -176,15 +98,7 @@
                 },
                 success: function(response) {
                     console.log(response);
-                    // $('#addcategory').modal('hide');
-                    // $('#alert').text("Category added......");
-
-                    // setTimeout(function() {
-                    // $('#alert').fadeOut('slow');
-                    //     }, 10000);
-
                     window.location.reload();
-
                 },
                 error: function(dataResult) {
                     console.log(dataResult);

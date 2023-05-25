@@ -7,6 +7,8 @@ namespace Database\Seeders;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 use \App\Models\User;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,12 +17,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
-        Category::factory(10)->create();
+        // User::factory(10)->create();
+        // Category::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        //  Role::create(['name' => 'visiter']);
+        //  Role::create(['name' => 'publisher']);
+    //     $user->assignRole($role);
+        //   Permission::create(['name' => 'publish post']);
+        $user = User::find(9);
+        $user->assignRole('visiter');
+        // $role->givePermissionTo('publish post');
+
     }
 }
