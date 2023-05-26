@@ -28,6 +28,9 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($roles as $role)
+                                    @if ($role->name == 'admin')
+                                    @continue
+                                    @endif
                                     <tr>
                                         <td> {{ $role->name }} </td>
                                         <td> {{  date('F d,Y',strtotime($role->created_at)) }} </td>
@@ -35,17 +38,20 @@
                                         <td>  <div class="container1">
                                             <div class="switch-toggle">
                                                 <input type="checkbox" id="write-{{$role->id}}" name="changepermission"
-                                                    class="write" {{$role->hasPermissionTo('write post') ? 'checked' : ''}} >
+                                                    class="write" {{$role->hasPermissionTo('write post') ? 'checked' : ''}}
+                                                    onchange="changepermission('write-{{$role->id}}')" >
                                                 <label for="write-{{$role->id}}"></label>
                                             </div>
                                             <div class="switch-toggle">
                                                 <input type="checkbox" id="edit-{{$role->id}}" name="changepermission"
-                                                    class="edit" {{$role->hasPermissionTo('edit post') ? 'checked' : ''}}>
+                                                    class="edit" {{$role->hasPermissionTo('edit post') ? 'checked' : ''}}
+                                                    onchange="changepermission('edit-{{$role->id}}')">
                                                 <label for="edit-{{$role->id}}"></label>
                                             </div>
                                             <div class="switch-toggle">
                                                 <input type="checkbox" id="publish-{{$role->id}}" name="changepermission"
-                                                    class="publish" {{$role->hasPermissionTo('publish post') ? 'checked' : ''}} >
+                                                    class="publish" {{$role->hasPermissionTo('publish post') ? 'checked' : ''}}
+                                                    onchange="changepermission('publish-{{$role->id}}')" >
                                                 <label for="publish-{{$role->id}}"></label>
                                             </div>
                                         </td>
@@ -121,6 +127,27 @@
 </div>
 </x-layout>
 <script>
+
+     function changepermission(permission)
+     {
+        var state = $('#' + permission).is(':checked');
+        var pr = permission.split('-')[0] + ' ' + 'post';
+        var id = permission.split('-')[1];
+        $.ajax({
+            type: "patch",
+            url: "role/permission/" + id,
+            data: {
+                "_token": "{{ csrf_token() }}",
+                'state' : state,
+                'permission' : pr
+            },
+            success: function (response) {
+                console.log(response);
+                window.location.reload();
+            }
+        });
+     }
+
     $(document).ready(function () {
         $(document).on('click','#roleadd', function () {
             var role = $('#name').val();

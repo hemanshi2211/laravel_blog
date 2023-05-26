@@ -9,7 +9,11 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h1>All Posts <a name="" id="" class="btn btn-primary float-right" href="post/create" role="button">Add</a></h1>
+                                <h1>All Posts
+                                    @can('write post')
+                                    <a name="" id="" class="btn btn-primary float-right" href="post/create" role="button">Add</a>
+                                    @endcan
+                                </h1>
                                 <table id="myTable" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -40,10 +44,12 @@
                                                         role="button"> <i class='fas fa-edit'
                                                             style='font-size:24px; color:green'></i>
                                                     </a>
+                                                    @role('admin')
                                                     <button class="btn postdelete_btn" value="{{ $post->id }}"> <i
                                                             class='far fa-trash-alt'
                                                             style='font-size:24px; color:red'></i>
                                                     </button>
+                                                    @endrole
                                                 </td>
                                             </tr>
                                         @endforeach

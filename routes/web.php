@@ -33,28 +33,29 @@ Route::get('/', function () {
 
     return view('welcome');
 });
-Route::get('admin/index', function(){ return view('admin.index'); });
+Route::get('admin/index', function(){ return view('admin.index'); })->middleware('auth');
 Route::resource('register', RegisterController::class);
 Route::get('login',[SessionController::class, 'index']);
 Route::post('login',[SessionController::class, 'store']);
-Route::get('logout',[SessionController::class, 'destroy']);
+Route::get('logout',[SessionController::class, 'destroy'])->middleware('auth');
 // category
-Route::get('category',[CategoryController::class, 'index']);
-Route::post('store',[CategoryController::class, 'store']);
-Route::get('category/edit/{category}',[CategoryController::class, 'edit']);
-Route::get('category/update/{category}',[CategoryController::class, 'update']);
-Route::post('category/delete/{id}', [CategoryController::class, 'delete']);
+Route::get('category',[CategoryController::class, 'index'])->middleware('auth');
+Route::post('store',[CategoryController::class, 'store'])->middleware('auth');
+Route::get('category/edit/{category}',[CategoryController::class, 'edit'])->middleware('auth');
+Route::get('category/update/{category}',[CategoryController::class, 'update'])->middleware('auth');
+Route::post('category/delete/{id}', [CategoryController::class, 'delete'])->middleware('auth');
 
 // posts
-Route::get('posts',[PostsController::class, 'index']);
-Route::get('post/create',[PostsController::class, 'create']);
-Route::post('posts',[PostsController::class, 'store']);
-Route::get('post/edit/{id}',[PostsController::class, 'edit']);
-Route::post('post/update/{id}',[PostsController::class, 'update']);
-Route::post('post/delete/{id}',[PostsController::class, 'delete']);
-Route::get('status/{post}',[PostsController::class, 'status']);
+Route::get('posts',[PostsController::class, 'index'])->middleware('auth');
+Route::get('post/create',[PostsController::class, 'create'])->middleware('auth');
+Route::post('posts',[PostsController::class, 'store'])->middleware('auth');
+Route::get('post/edit/{id}',[PostsController::class, 'edit'])->middleware('auth');
+Route::post('post/update/{id}',[PostsController::class, 'update'])->middleware('auth');
+Route::post('post/delete/{id}',[PostsController::class, 'delete'])->middleware('auth');
+Route::get('status/{post}',[PostsController::class, 'status'])->middleware('auth');
 //user
-Route::patch('user/state/{id}',[UserController::class, 'stateUpdate']);
-Route::resource('user', UserController::class);
+Route::patch('user/state/{id}',[UserController::class, 'stateUpdate'])->middleware('auth');
+Route::resource('user', UserController::class)->middleware('auth');
 //role
-Route::resource('role', RoleController::class);
+Route::resource('role', RoleController::class)->middleware('auth');
+Route::patch('role/permission/{id}',[RoleController::class, 'stateUpdate'])->middleware('auth');

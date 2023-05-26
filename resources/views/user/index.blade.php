@@ -1,3 +1,4 @@
+@role('admin')
 <x-layout>
 <x-nav/>
 <x-sidebar/>
@@ -29,6 +30,9 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($users as $user)
+                                    @if ($user->name == 'admin')
+                                        @continue
+                                    @endif
                                         <tr>
                                             <td> {{$user->name}} </td>
                                             <td> {{$user->email}} </td>
@@ -106,21 +110,18 @@
                                     <label for="">Role</label>
                                   <div class="form-check">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="role" id="" value="admin">
-                                      Admin &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                      <input type="radio" class="form-check-input" name="role" id="" value="writer">
-                                      Writer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                      <input type="radio" class="form-check-input" name="role" id="" value="editor">
-                                      Editor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                      <input type="radio" class="form-check-input" name="role" id="" value="publisher">
-                                      Publisher &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                      <input type="radio" class="form-check-input" name="role" id="" value="visiter" checked>
-                                      Visiter
+                                        @php
+                                            $roles = Spatie\Permission\Models\Role::all();
+                                            // dd($roles);
+                                        @endphp
+                                        @foreach ($roles as $role)
+                                        <input type="radio" class="form-check-input" name="role" id="" value="{{$role->name}}">
+                                         {{$role->name}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+                                        @endforeach
                                     </label>
                               <p class="text-red " id="2err-role"></p>
                                   </div>
                                 </div>
-
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -131,7 +132,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Modal -->
         <div class="modal fade" id="editusermodal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -159,16 +159,10 @@
                                     <label for="">Role</label>
                                   <div class="form-check">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="editrole" id="" value="admin">
-                                      Admin &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                      <input type="radio" class="form-check-input" name="editrole" id="" value="writer">
-                                      Writer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                      <input type="radio" class="form-check-input" name="editrole" id="" value="editor">
-                                      Editor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                      <input type="radio" class="form-check-input" name="editrole" id="" value="publisher">
-                                      Publisher &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                      <input type="radio" class="form-check-input" name="editrole" id="" value="visiter" checked>
-                                      Visiter
+                                        @foreach ($roles as $role)
+                                        <input type="radio" class="form-check-input" name="editrole" id="" value="{{$role->name}}">
+                                         {{$role->name}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br/>
+                                        @endforeach
                                     </label>
                               <p class="text-red " id="2err-role"></p>
                                   </div>
@@ -332,4 +326,4 @@
         });
     });
 </script>
-
+@endrole

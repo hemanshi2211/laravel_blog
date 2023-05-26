@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -66,10 +67,15 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Role $role)
     {
-        $delete = Role::destroy($id);
-        if ($delete == 1) {
+        $users = User::role($role)->get();
+        foreach($users as $user)
+        {
+        $user->assignRole('visitor');
+        }
+        $delete = $role->delete();
+       if ($delete == 1) {
             $success = true;
             $message = "Category deleted successfully";
         } else {
@@ -80,5 +86,20 @@ class RoleController extends Controller
             'success' => $success,
             'message' => $message,
         ]);
+    }
+    public function stateUpdate($id)
+    {
+        $role = Role::find($id);
+        // dd($user);
+        if(request()->state == 'true')
+        {
+            $role->givePermissionTo(request()->permission);
+            session()->flash('success','Permission assigned...');
+        }
+        else
+        {
+            $role->revokePermissionTo(request()->permission);
+            session()->flash('success','permission Removed...');
+        }
     }
 }

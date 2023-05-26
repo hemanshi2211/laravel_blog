@@ -32,6 +32,7 @@
                         </p>
                     </a>
                 </li>
+                @role('admin|writer|editor')
                 <li class="nav-item">
                     <a href="/category" class="nav-link {{ (request()->is('category'))?'active':''}} ">
                         <i class="nav-icon fas fa-th"></i>
@@ -48,6 +49,7 @@
                         </p>
                     </a>
                 </li>
+                @role('admin')
                 <li class="nav-item">
                     <a href="/user" class="nav-link {{(request()->is('user'))?'active':''}}">
                         <i class="nav-icon fas fa-solid fa-user"></i>
@@ -64,6 +66,8 @@
                         </p>
                     </a>
                 </li>
+                @endrole
+                @endrole
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

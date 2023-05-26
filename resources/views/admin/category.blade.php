@@ -8,8 +8,12 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h1>Categories   <input name="" id="" data-toggle="modal" data-target="#addcategory"
-                                    class="btn btn-primary float-right" type="button" value="Add"></h1>
+                                <h1>Categories
+                                    @can('write post')
+                                      <input name="" id="" data-toggle="modal" data-target="#addcategory"
+                                    class="btn btn-primary float-right" type="button" value="Add">
+                                    @endcan
+                                </h1>
                                 <table id="myTable" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -34,13 +38,17 @@
                                                     </td>
                                                 @endif
                                                 <td>
+                                                    @can('edit post')
                                                     <button class="btn edit_btn" value="{{ $category->id }}"> <i
-                                                            class='fas fa-edit' style='font-size:24px; color:green'></i>
-                                                    </button>
+                                                        class='fas fa-edit' style='font-size:24px; color:green'></i>
+                                                </button>
+                                                    @endcan
+                                                    @role('admin')
                                                     <button class="btn delete_btn" value="{{ $category->id }}"> <i
                                                             class='far fa-trash-alt'
                                                             style='font-size:24px; color:red'></i>
                                                     </button>
+                                                    @endrole
                                                 </td>
                                             </tr>
                                         @endforeach
