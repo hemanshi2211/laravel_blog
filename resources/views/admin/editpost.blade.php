@@ -18,8 +18,9 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="/post/update/{{$post->id}}" method="POST" enctype="multipart/form-data">
+                                <form action="/posts/{{$post->id}}" method="POST" enctype="multipart/form-data">
                                     @csrf
+                                    {{ method_field('PATCH') }}
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">

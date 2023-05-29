@@ -8,7 +8,7 @@
                 <div class="card-body">
                     <p class="login-box-msg">Register a new membership</p>
 
-                    <form action="{{ route('register.store') }}" method="post">
+                    <form action="/registration" method="post">
                         @csrf
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" name="name" value="{{old('name')}}" placeholder="Full name">
@@ -55,33 +55,14 @@
                             <p class="text-red-500 mt-1 text-xm" style="color:red"> {{ $message }} </p>
                         @enderror
                         <div class="row">
-                            <div class="col-8">
-
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-4">
+                            <div class="col">
                                 <button type="submit" class="btn btn-primary btn-block">Register</button>
                             </div>
-                            <!-- /.col -->
                         </div>
                     </form>
-
-                    <div class="social-auth-links text-center">
-                        <a href="#" class="btn btn-block btn-primary">
-                            <i class="fab fa-facebook mr-2"></i>
-                            Sign up using Facebook
-                        </a>
-                        <a href="#" class="btn btn-block btn-danger">
-                            <i class="fab fa-google-plus mr-2"></i>
-                            Sign up using Google+
-                        </a>
-                    </div>
-
-                    <a href="login" class="text-center">I already have a membership</a>
+                    <a href="/login/create" class="text-center">I already have a membership</a>
                 </div>
-                <!-- /.form-box -->
-            </div><!-- /.card -->
+            </div>
         </div>
-        <!-- /.register-box -->
     </div>
 </x-layout>

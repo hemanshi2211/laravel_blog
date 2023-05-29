@@ -11,7 +11,7 @@
                             <div class="card-body">
                                 <h1>All Posts
                                     @can('write post')
-                                    <a name="" id="" class="btn btn-primary float-right" href="post/create" role="button">Add</a>
+                                    <a name="" id="" class="btn btn-primary float-right" href="{{route('posts.create')}}" role="button">Add</a>
                                     @endcan
                                 </h1>
                                 <table id="myTable" class="table table-bordered table-hover">
@@ -40,7 +40,7 @@
                                                     </p>
                                                 </td>
                                                 <td>
-                                                    <a href="post/edit/{{ $post->id }}" class="btn"
+                                                    <a href="posts/{{ $post->id }}/edit" class="btn"
                                                         role="button"> <i class='fas fa-edit'
                                                             style='font-size:24px; color:green'></i>
                                                     </a>
@@ -53,21 +53,14 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card -->
                     </div>
-                    <!-- /.col -->
                 </div>
-                <!-- /.row -->
             </div>
-
         </section>
-        <!-- /.content -->
     </div>
 </x-layout>
 <script>
@@ -89,9 +82,6 @@
         });
     }
     $(document).ready(function() {
-
-
-
         $(document).on('click', '.postdelete_btn', function() {
             var id = $(this).val();
             // console.log(id);
@@ -111,8 +101,8 @@
                     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
                     $.ajax({
-                        type: 'POST',
-                        url: "{{ url('/post/delete') }}/" + id,
+                        type: 'delete',
+                        url: "/posts/" + id,
                         data: {
                             _token: CSRF_TOKEN
                         },

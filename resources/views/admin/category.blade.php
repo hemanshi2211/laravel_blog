@@ -85,24 +85,17 @@
         $('#form-addcategory').submit(function(e) {
             e.preventDefault();
 
-            // alert('hello');
             var name = $('#name-Save').val();
             var status = $('input[type="radio"]:checked').val();
-            // var _tokan = $('input[name=_token]').val();
-
             console.log(name);
             console.log(status);
-
-
             $.ajax({
                 type: "POST",
-                url: "/store",
-
+                url: "/category",
                 data: {
                     "_token": "{{ csrf_token() }}",
                     'name': name,
                     'status': status,
-                    // _tokan: _tokan,
                 },
                 success: function(response) {
                     console.log(response);
@@ -122,12 +115,11 @@
 
         $(document).on('click', '.edit_btn', function(e) {
             e.preventDefault();
-            //  alert('hello');
+
             var id = $(this).val();
-            // console.log(id);
             $.ajax({
                 type: "get",
-                url: "category/edit/" + id,
+                url: "/category/" + id + "/edit",
                 data: {
                     'id': id,
                 },
@@ -149,8 +141,8 @@
             var estatus = $('input[name="status-Update"]:checked').val();
 
             $.ajax({
-                type: "GET",
-                url: "category/update/" + eid,
+                type: "PATCH",
+                url: "/category/" + eid,
                 data: {
                     "_token": "{{ csrf_token() }}",
                     'name': ename,
@@ -192,8 +184,8 @@
                     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
                     $.ajax({
-                        type: 'POST',
-                        url: "{{ url('/category/delete') }}/" + id,
+                        type: 'DELETE',
+                        url: "/category/" + id,
                         data: {
                             _token: CSRF_TOKEN
                         },

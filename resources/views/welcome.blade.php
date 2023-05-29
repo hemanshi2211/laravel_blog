@@ -1,24 +1,52 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <title>Title</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  </head>
-  <body>
-      <nav class="nav justify-content-center">
-        <a class="nav-link" href="login">Login</a>
-        <a class="nav-link" href="{{route('register.index')}}">Register</a>
-        <a class="nav-link disabled" href="#">Disabled link</a>
-      </nav>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
-</html>
+{{-- {{dd($posts)}} --}}
+<x-customer.layout>
+    <x-customer.nav />
+    <x-customer.header title="{{ Str::contains(url()->current(),'category') ? $posts[0]->category->name : (Str::contains(url()->current(),'author' )  ? $posts[0]->author->name : 'Posts')}}"/>
+    <section class="blog-posts grid-system">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="all-blog-posts">
+                        <div class="row">
+                            @foreach ($posts as $post)
+                            <div class="col-lg-6">
+                                <div class="blog-post">
+                                    <div class="blog-thumb">
+                                        <img src="/storage/{{$post->image}}" alt="" height="270px">
+                                    </div>
+                                    <div class="down-content">
+                                        <span> {{$post->category->name}} </span>
+                                        <a href="/post/{{$post->id}}/show">
+                                            <h4> {{$post->title}} </h4>
+                                        </a>
+                                        <ul class="post-info">
+                                            {{-- {{dd($post->author->id)}} --}}
+                                            <li><a href="/author/{{$post->author->id}}"> {{$post->author->name}} </a></li>
+                                            <li> {{date('F d,Y', strtotime($post->created_at))}}</li>
+                                            <li> {{$post->created_at->diffForHumans()}} </li>
+                                        </ul>
+                                        <p> {{ $post->excerpt }} </p>
+                                        <div class="post-options">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <ul class="post-tags">
+                                                        <li><i class="fa fa-tags"></i></li>
+                                                        <li><a href="/post/{{$post->id}}/show">read more</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+    <!-- sidebar Content -->
+                <x-customer.sidebar/>
+            </div>
+        </div>
+    </section>
+    <x-customer.footer />
+</x-customer.layout>
