@@ -21,7 +21,9 @@
                                             <th>Image</th>
                                             <th>Title</th>
                                             <th>Category</th>
+                                            @can('publish post')
                                             <th>Status</th>
+                                            @endcan
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -32,6 +34,7 @@
                                                 <td> <img src="/storage/{{ $post->image }}" height="60" width="60"> </td>
                                                 <td> {{ ucwords($post->title) }} </td>
                                                 <td> {{ ucwords($post->category->name) }} </td>
+                                                @can('publish post')
                                                 <td>
                                                     <p><input type="checkbox" id="switch-{{ $post->id }}" switch="bool"
                                                             onchange="change('switch-{{ $post->id }}')"
@@ -39,17 +42,22 @@
                                                         <label for="switch-{{ $post->id }}" data-on-label="Active" data-off-label="Inactive"></label>
                                                     </p>
                                                 </td>
+                                                @endcan
                                                 <td>
+                                                    @can('edit post')
                                                     <a href="posts/{{ $post->id }}/edit" class="btn"
                                                         role="button"> <i class='fas fa-edit'
                                                             style='font-size:24px; color:green'></i>
                                                     </a>
-                                                    @role('admin')
+                                                    @endcan
+                                                    @can('delete post')
                                                     <button class="btn postdelete_btn" value="{{ $post->id }}"> <i
                                                             class='far fa-trash-alt'
                                                             style='font-size:24px; color:red'></i>
                                                     </button>
-                                                    @endrole
+                                                    @else
+                                                       <button class="btn " ><i class="fa fa-minus-circle" style="font-size:24px"></i></button>
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -70,9 +78,10 @@
         var s_id = id.split('-')[1];
         console.log(s_id);
         $.ajax({
-            type: "get",
+            type: "patch",
             url: "status/" + s_id,
             data: {
+                "_token": "{{ csrf_token() }}",
                 'status': status,
             },
             success: function(response) {
@@ -136,3 +145,4 @@
     toastr.success('Done', "{{ session()->get('success') }}");
 </script>
 @endif
+

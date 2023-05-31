@@ -32,7 +32,7 @@
                         </p>
                     </a>
                 </li>
-                @role('admin|writer|editor')
+                @if(Auth::user()->hasAnyPermission(['write category','edit category','delete category']))
                 <li class="nav-item">
                     <a href="/category" class="nav-link {{ (request()->is('category'))?'active':''}} ">
                         <i class="nav-icon fas fa-th"></i>
@@ -41,6 +41,8 @@
                         </p>
                     </a>
                 </li>
+                @endif
+                @if(Auth::user()->hasAnyPermission(['write post','edit post','delete post','publish post']))
                 <li class="nav-item">
                     <a href="/posts" class="nav-link {{(request()->is('posts'))?'active':''}}">
                         <i class="nav-icon fas fa-chart-pie"></i>
@@ -49,7 +51,8 @@
                         </p>
                     </a>
                 </li>
-                @role('admin')
+                @endif
+                @if(Auth::user()->hasAnyPermission(['write user','edit user','delete user']))
                 <li class="nav-item">
                     <a href="/user" class="nav-link {{(request()->is('user'))?'active':''}}">
                         <i class="nav-icon fas fa-solid fa-user"></i>
@@ -58,6 +61,8 @@
                         </p>
                     </a>
                 </li>
+                @endif
+                @if(Auth::user()->hasAnyPermission(['write role','edit role','delete role']))
                 <li class="nav-item">
                     <a href="/role" class="nav-link {{(request()->is('role'))?'active':''}}">
                         <i class="nav-icon fas fa-solid fa-file"></i>
@@ -66,8 +71,7 @@
                         </p>
                     </a>
                 </li>
-                @endrole
-                @endrole
+                @endif
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

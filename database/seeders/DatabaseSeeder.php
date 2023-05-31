@@ -26,10 +26,20 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'write post']);
         Permission::create(['name' => 'edit post']);
         Permission::create(['name' => 'publish post']);
+        Permission::create(['name' => 'delete post']);
+        Permission::create(['name' => 'write category']);
+        Permission::create(['name' => 'edit category']);
+        Permission::create(['name' => 'delete category']);
+        Permission::create(['name' => 'write user']);
+        Permission::create(['name' => 'edit user']);
+        Permission::create(['name' => 'delete user']);
+        Permission::create(['name' => 'write role']);
+        Permission::create(['name' => 'edit role']);
+        Permission::create(['name' => 'delete role']);
 
 
         $role = Role::findById(1);
-        $role->syncPermissions(['write post', 'edit post', 'publish post']);
+        $role->syncPermissions(['write post', 'edit post', 'publish post','delete post','write category','edit category','delete category','write user','edit user','delete user','write role','edit role','delete role']);
         $role = Role::findById(2);
         $permission = Permission::findById(1);
         $role->givePermissionTo($permission);

@@ -16,15 +16,19 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h1>All Users <button name="" id="" data-toggle="modal" data-target="#addmodal"
-                                class="btn btn-primary float-right" type="button"> <i class='fas fa-solid fa-user-plus'></i> </button></h1>
+                            <h1>All Users
+                                @can('write user')
+                                <button name="" id="" data-toggle="modal" data-target="#addmodal"
+                                class="btn btn-primary float-right" type="button"> <i class='fas fa-solid fa-user-plus'></i></button>
+                                @endcan
+                            </h1>
                             <table id="myTable" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Role</th>
-                                        <th style="text-align: center;">Permission<br/><span class="p-4 ml-2">write</span><span class="p-5 ml-4">edit</span><span class="ml-5">publish</span></th>
+                                        {{-- <th style="text-align: center;">Permission<br/><span class="p-4 ml-2">write</span><span class="p-5 ml-4">edit</span><span class="ml-5">publish</span></th> --}}
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -37,7 +41,7 @@
                                             <td> {{$user->name}} </td>
                                             <td> {{$user->email}} </td>
                                             <td> {{ucwords($user->getRoleNames()[0])}} </td>
-                                            <td>  <div class="container1">
+                                            {{-- <td>  <div class="container1">
                                                 <div class="switch-toggle">
                                                     <input type="checkbox" id="write-{{$user->id}}" name="changepermission"
                                                         class="write" {{ $user->hasPermissionTo('write post') ? 'checked' : ' '}}
@@ -59,15 +63,19 @@
                                                     {{$user->hasRole('visitor') ? 'disabled' : ' ' }}>
                                                     <label for="publish-{{$user->id}}"></label>
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                             <td>
+                                                @can('edit user')
                                                 <button class="btn" id="useredit" value="{{$user->id}}"> <i
                                                         class='fas fa-edit' style='font-size:24px; color:green'></i>
                                                 </button>
+                                                @endcan
+                                                @can('delete user')
                                                 <button class="btn " id="deleteuser" value="{{$user->id}}"> <i
                                                         class='far fa-trash-alt'
                                                         style='font-size:24px; color:red'></i>
                                                 </button>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

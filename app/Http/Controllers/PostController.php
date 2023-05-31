@@ -4,21 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Posts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DemoMail;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         if (request()->is('search')) {
             dd('hello');
             $posts = Posts::where('title', 'like', '%' . request('search') . '%')->get()
-                            ->orWhere('body' , 'like' , '%' . request('search') . '%');
-        }
-        else {
-        $posts = Posts::all();
+                ->orWhere('body', 'like', '%' . request('search') . '%');
+        } else {
+            $posts = Posts::all();
         }
 
         return view('admin.posts', [
@@ -51,13 +50,21 @@ class PostController extends Controller
         $attributes['user_id'] = auth()->id();
         $attributes['image'] = request()->file('image')->store('blog');
 
-        Posts::create($attributes);
+        $post = Posts::create($attributes);
 
+        $mailData = [
+            'title' => 'Mail form Web',
+            'body' => 'hello , how are you this is for testing email',
+            'id' => $post->id,
+        ];
+        // dd($attributes['id']);
+
+        Mail::to('hemanshigajera2@gmail.com')->send(new DemoMail($mailData));
+        // dd('email send ');
         session()->flash('success', 'New Post added.....');
 
         return redirect('/posts');
     }
-
     /**
      * Display the specified resource.
      */
@@ -82,7 +89,7 @@ class PostController extends Controller
      */
     public function update($id)
     {
-    $attributes = request()->validate([
+        $attributes = request()->validate([
             'title' => 'required|min:3',
             'category_id' => 'required',
             'excerpt' => 'required|min:5',
@@ -119,13 +126,13 @@ class PostController extends Controller
     }
     public function status(Posts $post)
     {
-       $post->update([
-        'status' =>
-        request()->status
-       ]);
-       return response([
-        'title' => 'success',
-        'message' => 'Status Updated....',
-       ]);
+        $post->update([
+            'status' =>
+            request()->status
+        ]);
+        return response([
+            'title' => 'success',
+            'message' => 'Status Updated....',
+        ]);
     }
 }

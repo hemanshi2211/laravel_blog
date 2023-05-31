@@ -39,11 +39,22 @@ class CustomAuthController extends Controller
             ]);
         }
         session()->regenerate();
+
         if(auth()->user()->hasRole('visitor'))
         {
             return redirect('/');
         }else{
+            if(session()->has('url'))
+            {
+                $value = session()->get('url');
+                session()->forget('url');
+                // dd($value);
+               return redirect($value['intended']);
+            }
+            else
+            {
             return redirect('/admin/index');
+            }
         }
 
     }

@@ -87,42 +87,5 @@
 <script>
     $(document).ready(function() {
         $('#summernote').summernote();
-
-        // $(document).on('click', '#addpost', function() {
-
-        //     var title = $('#title').val();
-        //     var category = $('#category').val();
-        //     var excerpt = $('#excerpt').val();
-        //     var body = $('#summernote').val();
-        //     var image = $('#image').val();
-
-        //     console.log(image);
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "posts/store",
-        //         data: {
-        //             "_token": "{{ csrf_token() }}",
-        //             'title': title,
-        //             'category_id': category,
-        //             'excerpt': excerpt,
-        //             'body': body,
-        //             'image': image
-        //         },
-        //         success: function(response) {
-        //             console.log(response);
-        //         },
-        //         error: function(dataResult) {
-        //             console.log(dataResult);
-        //             $error = dataResult.responseJSON.errors;
-        //             if (dataResult.status == 422) {
-        //                 $.each($error, function(key, value) {
-        //                     $('#err-' + key).html(value);
-        //                 });
-        //             }
-        //         }
-        //     });
-
-        // });
-
     });
 </script>

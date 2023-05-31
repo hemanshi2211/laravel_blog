@@ -8,9 +8,7 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         return view('role.index',[
@@ -23,7 +21,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('role.addrole');
     }
 
     /**
@@ -34,10 +32,11 @@ class RoleController extends Controller
         $attributes = $request->validate([
             'name' => 'required',
         ]);
-        // dd($request->permission);
+
         $role = Role::create($attributes);
         $role->syncPermissions($request->permission);
         session()->flash('success','Role Added....');
+        return redirect('/role');
     }
 
     /**
@@ -51,17 +50,26 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $role = Role::findById($id);
+        $rolePermission = $role->getAllPermissions();
+        // dd($rolePermission);
+        return view('role.edit',compact('role','rolePermission'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update($id)
     {
-        //
+        $attributes = request()->validate([
+            'name' => 'required|min:3',
+        ]);
+        $role = Role::findById($id);
+        $role->update($attributes);
+        $role->syncPermissions(request()->permission);
+        session()->flash('success','Role Updated....');
     }
 
     /**

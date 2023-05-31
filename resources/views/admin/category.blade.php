@@ -9,7 +9,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h1>Categories
-                                    @can('write post')
+                                    @can('write category')
                                       <input name="" id="" data-toggle="modal" data-target="#addcategory"
                                     class="btn btn-primary float-right" type="button" value="Add">
                                     @endcan
@@ -38,17 +38,17 @@
                                                     </td>
                                                 @endif
                                                 <td>
-                                                    @can('edit post')
+                                                    @can('edit category')
                                                     <button class="btn edit_btn" value="{{ $category->id }}"> <i
                                                         class='fas fa-edit' style='font-size:24px; color:green'></i>
-                                                </button>
+                                                    </button>
                                                     @endcan
-                                                    @role('admin')
+                                                    @can('delete category')
                                                     <button class="btn delete_btn" value="{{ $category->id }}"> <i
                                                             class='far fa-trash-alt'
                                                             style='font-size:24px; color:red'></i>
                                                     </button>
-                                                    @endrole
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @endforeach

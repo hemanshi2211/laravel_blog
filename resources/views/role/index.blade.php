@@ -15,14 +15,17 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h1>Role & Permission<input data-toggle="modal" data-target="#addmodal"
-                                class="btn btn-primary float-right" type="button" value="Add"> </h1>
+                            <h1>Role & Permission
+                                @can('write role')
+                                <a href="role/create" class="btn btn-primary float-right" type="button">Add</a>
+                                @endcan
+                            </h1>
                             <table id="myTable" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>Role Name</th>
                                         <th>Create At</th>
-                                        <th style="text-align: center; width: 30%;"><span>Permission</span> <br/><span class="p-5 ml-2">write</span><span class="p-5 ml-4">edit</span><span class="p-5 ml-4">publish</span></th>
+                                        {{-- <th style="text-align: center; width: 30%;"><span>Permission</span> <br/><span class="p-5 ml-2">write</span><span class="p-5 ml-4">edit</span><span class="p-5 ml-4">publish</span></th> --}}
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -35,7 +38,7 @@
                                         <td> {{ $role->name }} </td>
                                         <td> {{  date('F d,Y',strtotime($role->created_at)) }} </td>
                                         {{-- <td> {{  $role->created_at->diffForHumans() }} </td> --}}
-                                        <td>  <div class="container1">
+                                        {{-- <td>  <div class="container1">
                                             <div class="switch-toggle">
                                                 <input type="checkbox" id="write-{{$role->id}}" name="changepermission"
                                                     class="write" {{$role->hasPermissionTo('write post') ? 'checked' : ''}}
@@ -54,15 +57,22 @@
                                                     onchange="changepermission('publish-{{$role->id}}')" >
                                                 <label for="publish-{{$role->id}}"></label>
                                             </div>
-                                        </td>
+                                        </td> --}}
                                         <td>
+                                            @can('edit role')
+                                            <a href="/role/{{$role->id}}/edit" class="btn"> <i
+                                                class='fas fa-edit' style='font-size:24px; color:green'></i>
+                                           </a>
+                                           @endcan
                                      @if ($role->name == 'visitor')
                                      <button class="btn"> <i class="fa fa-close" style="font-size:24px; color:red"></i>
                                       </button>
                                       @else
+                                      @can('delete role')
                                       <button class="btn " id="roledelete" value="{{$role->id}}"><i class='far fa-trash-alt'
                                         style='font-size:24px; color:red'></i>
                                       </button>
+                                      @endcan
                                      @endif
                                    </td>
                                     </tr>
@@ -75,80 +85,30 @@
             </div>
         </div>
     </section>
-    <!-- Modal -->
-    <div class="modal fade" id="addmodal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                    <div class="modal-header">
-                            <h5 class="modal-title">Add New Role </h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                        </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <form>
-                            <div class="form-group">
-                              <label for="">Role</label>
-                              <input type="text" name="name" id="name" class="form-control" placeholder="Role name" aria-describedby="helpId">
-                          <p class="text-red " id="err-name"></p>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Permission</label><br/>
-                                <label><span class="p-5 ml-2">Write</span><span class="p-3 ml-5">Edit</span><span class="p-5 ml-5">Publish</span></label>
-                                <div class="container1">
-                                    <div class="switch-toggle">
-                                        <input type="checkbox" id="write post" name="change" value="write post"
-                                            class="write" checked>
-                                        <label for="write post"></label>
-                                    </div>
-                                    <div class="switch-toggle">
-                                        <input type="checkbox" id="edit post" name="change" value="edit post"
-                                            class="edit">
-                                        <label for="edit post"></label>
-                                    </div>
-                                    <div class="switch-toggle">
-                                        <input type="checkbox" id="publish post" name="change" value="publish post"
-                                            class="publish">
-                                        <label for="publish post"></label>
-                                    </div>
-                            </div>
-                          <p class="text-red " id="err-change"></p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" id="roleadd" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-            </div>
-        </div>
-    </div>
 </div>
 </x-layout>
 <script>
-
-     function changepermission(permission)
-     {
-        var state = $('#' + permission).is(':checked');
-        var pr = permission.split('-')[0] + ' ' + 'post';
-        var id = permission.split('-')[1];
-        $.ajax({
-            type: "patch",
-            url: "role/permission/" + id,
-            data: {
-                "_token": "{{ csrf_token() }}",
-                'state' : state,
-                'permission' : pr
-            },
-            success: function (response) {
-                console.log(response);
-                window.location.reload();
-            }
-        });
-     }
-
+    //  function changepermission(permission)
+    //  {
+    //     var state = $('#' + permission).is(':checked');
+    //     var pr = permission.split('-')[0] + ' ' + 'post';
+    //     var id = permission.split('-')[1];
+    //     $.ajax({
+    //         type: "patch",
+    //         url: "role/permission/" + id,
+    //         data: {
+    //             "_token": "{{ csrf_token() }}",
+    //             'state' : state,
+    //             'permission' : pr
+    //         },
+    //         success: function (response) {
+    //             console.log(response);
+    //             window.location.reload();
+    //         }
+    //     });
+    //  }
     $(document).ready(function () {
+
         $(document).on('click','#roleadd', function () {
             var role = $('#name').val();
             var per = [];
@@ -181,6 +141,7 @@
                 }
             });
         });
+
         $(document).on('click', '#roledelete', function() {
             var id = $(this).val();
             swal.fire({

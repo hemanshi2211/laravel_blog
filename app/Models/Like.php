@@ -17,6 +17,6 @@ class Like extends Model
     }
     public function author()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsToMany(User::class, 'like_users','like_id','user_id');
     }
 }

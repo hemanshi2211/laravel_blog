@@ -31,10 +31,13 @@
                                                 <div class="col">
                                                     <ul class="post-tags">
                                                         <li><i class="fa fa-tags"></i></li>
-                                                        <li><a href="/">Back</a></li>
-                            <button type="button" id="dislikebtn" value="{{$post->id}}" class="btn btn-danger float-right ml-3"><i class="fa fa-thumbs-down" style="font-size:24px"></i>
-                               {{ dd(count($post->likes->status)) }} </button>
-                            <button type="button" id="likebtn" value="{{$post->id}}" class="btn btn-success float-right "><i class="fa fa-thumbs-up" style="font-size:24px"></i> 0</button>
+                                                        <li><a href="/">Back {{$post->id}} </a></li>
+                                           @php
+                                               $like = App\Models\Like::where('status',1)->where('posts_id',$post->id)->count();
+                                               $dislike = App\Models\Like::where('status',0)->where('posts_id',$post->id)->count();
+                                           @endphp
+                            <button type="button" id="dislikebtn" value="{{$post->id}}" class="btn btn-danger float-right ml-3"><i class="fa fa-thumbs-down" style="font-size:24px"></i><span id="dislike" style="color: white">{{$dislike}}</span></button>
+                            <button type="button" id="likebtn" value="{{$post->id}}" class="btn btn-success float-right "><i class="fa fa-thumbs-up" style="font-size:24px"></i> <span id="like" style="color: white">{{$like}}</span></button>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -122,6 +125,24 @@
                 },
                 success: function (response) {
                     console.log(response);
+                    $('#like').html(response.like);
+                    $('#dislike').html(response.dislike);
+                }
+            });
+        });
+        $(document).on('click','#dislikebtn', function () {
+            var id = $(this).val();
+            $.ajax({
+                type: "post",
+                url: "/like/" + id,
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'status' : '0',
+                },
+                success: function (response) {
+                    console.log(response);
+                    $('#like').html(response.like);
+                    $('#dislike').html(response.dislike);
                 }
             });
         });
